@@ -67,4 +67,12 @@ exports.up = function(knex, Promise) {
     .coverages.integer("amount");
 };
 
-exports.down = function(knex, Promise) {};
+exports.down = function(knex, Promise) {
+  return knex.schema
+    .dropTableIfExists("users")
+    .dropTableIfExists("hospitals")
+    .dropTableIfExists("doctors")
+    .dropTableIfExists("insurers")
+    .dropTableIfExists("procedures")
+    .dropTableIfExists("coverages");
+};
