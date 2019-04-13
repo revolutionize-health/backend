@@ -6,10 +6,10 @@ module.exports = {
       filename: "./data/dev.sqlite3"
     },
     migrations: {
-      tableName: "./data/migrations"
+      directory: "./data/migrations"
     },
     seeds: {
-      tableName: "./data/seeds"
+      directory: "./data/seeds"
     }
   },
 
@@ -20,10 +20,10 @@ module.exports = {
       filename: "./data/test.sqlite3"
     },
     migrations: {
-      tableName: "./data/migrations"
+      directory: "./data/migrations"
     },
     seeds: {
-      tableName: "./data/seeds"
+      directory: "./data/seeds"
     }
   },
 
@@ -35,10 +35,10 @@ module.exports = {
       password: "password"
     },
     migrations: {
-      tableName: "./data/migrations"
+      directory: "./data/migrations"
     },
     seeds: {
-      tableName: "./data/seeds"
+      directory: "./data/seeds"
     }
   }
 };
