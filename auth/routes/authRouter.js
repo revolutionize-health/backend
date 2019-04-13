@@ -13,7 +13,7 @@ router.post("/registration", checkCredentials, hashPassword, (req, res) => {
   Auth.addUser(user)
     .then(newUser => {
       const token = Auth.generateToken(newUser);
-      res.status(201).json(newUser, token);
+      res.status(201).json(token);
     })
     .catch(error => {
       res.status(500).json(error);
@@ -22,10 +22,10 @@ router.post("/registration", checkCredentials, hashPassword, (req, res) => {
 
 router.post("/login", checkCredentials, (req, res) => {
   const { email, password } = req.body;
-  Auth.findUserBy(email)
+  Auth.findUserBy({ email: email })
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
-        const token = Auth.generateToken(newUser);
+        const token = Auth.generateToken(user);
         res.status(200).json(token);
       } else {
         res.status(403).json({ message: "invalid credentials" });

@@ -9,22 +9,20 @@ module.exports = {
 };
 
 async function addUser(user) {
-  const users = await db("users");
-//   console.log(users);
-  db("users")
-    .insert(user)
-    // .returning("id")
-    .then(([id]) => {
-      console.log(id);
-      findUserBy(id);
-    })
-    .catch(error => error);
+  const [id] = await db("users").insert(user);
+  // .returning("id")
+  const newUser = await findUserBy({ id: id });
+  console.log(newUser);
+  return newUser;
 }
 
-function findUserBy(param) {
-  return db("users")
-    .where({ param })
+async function findUserBy(param) {
+  const user = await db("users")
+    .where(param)
     .first();
+
+  console.log(user);
+  return user;
 }
 
 function generateToken(user) {
