@@ -63,8 +63,8 @@ exports.up = function(knex, Promise) {
         .inTable("procedures")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
-    })
-    .coverages.integer("amount");
+      coverages.integer("amount");
+    });
 };
 
 exports.down = function(knex, Promise) {
