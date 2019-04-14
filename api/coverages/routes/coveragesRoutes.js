@@ -1,5 +1,9 @@
 const express = require("express");
+
 const Coverages = require("../models/coveragesModel");
+const {
+  checkInsertRequirements
+} = require("../middleware/coveragesMiddleware");
 
 const router = express.Router();
 
@@ -21,6 +25,16 @@ router.get("/:id", (req, res) => {
       } else {
         res.status(404).json({ message: "no coverage with that id" });
       }
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.post("/", checkInsertRequirements, (req, res) => {
+  Coverages.addCoverage(req.body)
+    .then(newCoverage => {
+      res.status(201).json(newCoverage);
     })
     .catch(error => {
       res.status(500).json(error);

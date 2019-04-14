@@ -2,6 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const AuthRouter = require("../auth/routes/authRouter");
+const CoveragesRouter = require("../api/coverages/routes/coveragesRoutes");
+const DoctorsRouter = require("../api/doctors/routes/doctorsRoutes");
+const HospitalsRouter = require("../api/hospitals/routes/hosptalsRoutes");
+const InsurersRouter = require("../api/insurers/routes/insurersRoutes");
+const ProceduresRouter = require("../api/procedures/routes/proceduresRoutes");
 
 const app = express();
 
@@ -10,6 +15,11 @@ app.use(cors());
 app.use(helmet());
 
 app.use("/api/auth", AuthRouter);
+app.use("/api/coverages", CoveragesRouter);
+app.use("/api/doctors", DoctorsRouter);
+app.use("/api/hospitals", HospitalsRouter);
+app.use("/api/insurers", InsurersRouter);
+app.use("/api/procedures", ProceduresRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({ api: "running" });

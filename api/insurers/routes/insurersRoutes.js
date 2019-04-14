@@ -1,5 +1,7 @@
 const express = require("express");
+
 const Insurers = require("../models/insurersModels");
+const { checkInsertRequirements } = require("../middleware/insurersMiddleware");
 
 const router = express.Router();
 
@@ -27,6 +29,16 @@ router.get("/:id/coverages", (req, res) => {
   Insurers.getInsurersCoverages(req.params.id)
     .then(coverages => {
       res.status(200).json(coverages);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.post("/", checkInsertRequirements, (req, res) => {
+  Insurers.addInsurer(req.body)
+    .then(newInsurer => {
+      res.status(201).json(newInsurer);
     })
     .catch(error => {
       res.status(500).json(error);
