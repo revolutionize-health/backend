@@ -4,7 +4,9 @@ module.exports = {
   getHospitals,
   getHospitalsBy,
   getHospitalsDoctors,
-  addHospital
+  addHospital,
+  updateHospital,
+  deleteHospital
 };
 
 async function getHospitals() {
@@ -13,9 +15,8 @@ async function getHospitals() {
 }
 
 async function getHospitalsBy(param) {
-  const hospital = await db("hospitals")
-    .where(param)
-    // .first();
+  const hospital = await db("hospitals").where(param);
+  // .first();
 
   return hospital;
 }
@@ -36,4 +37,20 @@ async function addHospital(hospital) {
   const newHospital = await getHospitalsBy({ id: id });
 
   return newHospital;
+}
+
+async function updateHospital(id, changes) {
+  const changedHospital = await db("hospitals")
+    .where({ id: id })
+    .update(changes);
+
+  return changedHospital;
+}
+
+async function deleteHospital(id) {
+  const deleted = await db("hospitals")
+    .where({ id: id })
+    .del();
+
+  return deleted;
 }

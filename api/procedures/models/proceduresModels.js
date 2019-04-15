@@ -4,7 +4,9 @@ module.exports = {
   getProcedures,
   getProceduresBy,
   getProceduresCoverages,
-  addProcedure
+  addProcedure,
+  updateProcedure,
+  deleteProcedure
 };
 
 async function getProcedures() {
@@ -35,4 +37,20 @@ async function addProcedure(procedure) {
   const newprocedure = await getProceduresBy({ id: id });
 
   return newprocedure;
+}
+
+async function updateProcedure(id, changes) {
+  const changedProcedure = await db("procedures")
+    .where({ id: id })
+    .update(changes);
+
+  return changedProcedure;
+}
+
+async function deleteProcedure(id) {
+  const deleted = await db("procedures")
+    .where({ id: id })
+    .del();
+
+  return deleted;
 }

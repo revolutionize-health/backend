@@ -36,3 +36,19 @@ async function addInsurer(insurer) {
 
   return newInsurer;
 }
+
+async function updateInsurer(id, changes) {
+  const changedInsurer = await db("insurers")
+    .where({ id: id })
+    .update(changes);
+
+  return changedInsurer;
+}
+
+async function deleteInsurer(id) {
+  const deleted = await db("insurers")
+    .where({ id: id })
+    .del();
+
+  return deleted;
+}

@@ -3,7 +3,9 @@ const db = require("../../../data/dbConfig");
 module.exports = {
   getCoverages,
   getCoveragesBy,
-  addCoverage
+  addCoverage,
+  updateCoverage,
+  deleteCoverage
 };
 
 async function getCoverages() {
@@ -24,4 +26,20 @@ async function addCoverage(coverage) {
     .returning("id");
 
   return getCoveragesBy({ id: id });
+}
+
+async function updateCoverage(id, changes) {
+  const changedCoverage = await db("coverages")
+    .where({ id: id })
+    .update(changes);
+
+  return changedCoverage;
+}
+
+async function deleteCoverage(id) {
+  const deleted = await db("coverages")
+    .where({ id: id })
+    .del();
+
+  return deleted;
 }
