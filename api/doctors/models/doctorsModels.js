@@ -2,7 +2,7 @@ const db = require("../../../data/dbConfig");
 
 module.exports = {
   getDoctors,
-  getDoctorsBy,
+  getDoctorsById,
   addDoctor,
   updateDoctor,
   deleteDoctor
@@ -14,8 +14,10 @@ async function getDoctors() {
   return doctors;
 }
 
-async function getDoctorsBy(param) {
-  const doctor = await db("doctors").where(param);
+async function getDoctorsById(id) {
+  const doctor = await db("doctors")
+    .where({ doctor_id: id })
+    .first();
 
   return doctor;
 }
@@ -25,12 +27,12 @@ async function addDoctor(doctor) {
     .insert(doctor)
     .returning("id");
 
-  return getDoctorsBy({ id: id });
+  return getDoctorsById(id);
 }
 
 async function updateDoctor(id, changes) {
   const changedDoctor = await db("doctors")
-    .where({ id: id })
+    .where({ doctor_id: id })
     .update(changes);
 
   return changedDoctor;
@@ -38,7 +40,7 @@ async function updateDoctor(id, changes) {
 
 async function deleteDoctor(id) {
   const deleted = await db("doctors")
-    .where({ id: id })
+    .where({ doctor_id: id })
     .del();
 
   return deleted;

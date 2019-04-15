@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Procedures.getProceduresBy({ id: req.params.id })
+  Procedures.getProceduresById(req.params.id)
     .then(procedure => {
       res.status(200).json(procedure);
     })

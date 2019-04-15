@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Hospitals.getHospitalsBy({ id: req.params.id })
+  Hospitals.getHospitalsById(req.params.id)
     .then(hospital => {
       res.status(200).json(hospital);
     })

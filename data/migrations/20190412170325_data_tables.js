@@ -1,7 +1,11 @@
 exports.up = function(knex, Promise) {
   return knex.schema
     .createTable("users", users => {
-      users.increments();
+      users.increments("user_id");
+
+      users.string("first_name");
+
+      users.string("last_name");
 
       users
         .string("email")
@@ -11,61 +15,67 @@ exports.up = function(knex, Promise) {
       users.string("password").notNullable();
     })
     .createTable("hospitals", hospitals => {
-      hospitals.increments();
+      hospitals.increments("hospital_id");
 
-      hospitals
-        .string("name")
-        .unique()
-        .notNullable();
+      hospitals.string("hospital_name").unique();
 
-      hospitals.string("website").unique();
+      hospitals.string("hospital_website").unique();
     })
     .createTable("doctors", doctors => {
-      doctors.increments();
-      doctors.string("name").notNullable();
+      doctors.increments("doctor_id");
+
+      doctors.string("doctor_name").notNullable();
+
+      doctors.string("doctor_website").unique();
+
       doctors
         .integer("hospital_id")
         .unsigned()
         .notNullable()
-        .references("id")
+        .references("hospital_id")
         .inTable("hospitals")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
     })
     .createTable("insurers", insurers => {
-      insurers.increments();
+      insurers.increments("insurer_id");
 
       insurers
-        .string("name")
+        .string("insurer_name")
         .unique()
         .notNullable();
     })
     .createTable("procedures", procedures => {
-      procedures.increments();
+      procedures.increments("procedure_id");
+
       procedures
-        .string("name")
+        .string("procedure_name")
         .notNullable()
         .unique();
+
       procedures.integer("cost").notNullable();
     })
     .createTable("coverages", coverages => {
-      coverages.increments();
+      coverages.increments("coverage_id");
+
       coverages
         .integer("insurer_id")
         .unsigned()
         .notNullable()
-        .references("id")
+        .references("insurer_id")
         .inTable("insurers")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
+
       coverages
         .integer("procedure_id")
         .unsigned()
         .notNullable()
-        .references("id")
+        .references("procedure_id")
         .inTable("procedures")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
+
       coverages.integer("amount").notNullable();
     });
 };
