@@ -82,10 +82,10 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema
-    .dropTableIfExists("users")
-    .dropTableIfExists("hospitals")
-    .dropTableIfExists("doctors")
-    .dropTableIfExists("insurers")
+    .dropTableIfExists("coverages")
     .dropTableIfExists("procedures")
-    .dropTableIfExists("coverages");
+    .dropTableIfExists("insurers")
+    .dropTableIfExists("doctors")
+    .dropTableIfExists("hospitals")
+    .dropTableIfExists("users");
 };
