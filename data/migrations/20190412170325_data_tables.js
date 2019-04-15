@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
     })
     .createTable("doctors", doctors => {
       doctors.increments();
-      doctors.string("name");
+      doctors.string("name").notNullable();
       doctors
         .integer("hospital_id")
         .unsigned()
@@ -35,7 +35,10 @@ exports.up = function(knex, Promise) {
     .createTable("insurers", insurers => {
       insurers.increments();
 
-      insurers.string("name").unique();
+      insurers
+        .string("name")
+        .unique()
+        .notNullable();
     })
     .createTable("procedures", procedures => {
       procedures.increments();
@@ -43,7 +46,7 @@ exports.up = function(knex, Promise) {
         .string("name")
         .notNullable()
         .unique();
-      procedures.integer("cost");
+      procedures.integer("cost").notNullable();
     })
     .createTable("coverages", coverages => {
       coverages.increments();
@@ -63,7 +66,7 @@ exports.up = function(knex, Promise) {
         .inTable("procedures")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
-      coverages.integer("amount");
+      coverages.integer("amount").notNullable();
     });
 };
 
