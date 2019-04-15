@@ -2,7 +2,7 @@ const db = require("../../../data/dbConfig");
 
 module.exports = {
   getHospitals,
-  getHospitalsBy,
+  getHospitalsById,
   getHospitalsDoctors,
   addHospital,
   updateHospital,
@@ -14,19 +14,33 @@ async function getHospitals() {
   return hospitals;
 }
 
-async function getHospitalsBy(param) {
-  const hospital = await db("hospitals").where(param);
-  // .first();
+async function getHospitalsById(id) {
+  const hospital = await db("hospitals")
+    .where({ hospital_id: id })
+    .first();
 
   return hospital;
 }
 
 async function getHospitalsDoctors(id) {
-  const doctors = await db("hospitals")
-    .join("doctors", "hospitals.id", "doctors.hospital_id")
-    .where({ "hospitals.id": id });
+  const data = await db("hospitals")
+    .join("doctors", "hospitals.hospital_id", "doctors.hospital_id")
+    .where({ "hospitals.hospital_id": id });
 
-  return doctors;
+  const { hospital_name, hospital_id, hospital_website } = data[0];
+
+  const doctors = data.map(doctor => ({
+    doctor_id: doctor.doctor_id,
+    doctor_name: doctor.doctor_name,
+    doctor_website: doctor.doctor_website
+  }));
+
+  return {
+    hospital_id,
+    hospital_name,
+    hospital_website,
+    doctors
+  };
 }
 
 async function addHospital(hospital) {
@@ -34,14 +48,14 @@ async function addHospital(hospital) {
     .insert(hospital)
     .returning("id");
 
-  const newHospital = await getHospitalsBy({ id: id });
+  const newHospital = await getHospitalsById(id);
 
   return newHospital;
 }
 
 async function updateHospital(id, changes) {
   const changedHospital = await db("hospitals")
-    .where({ id: id })
+    .where({ hospital_id: id })
     .update(changes);
 
   return changedHospital;
@@ -49,7 +63,7 @@ async function updateHospital(id, changes) {
 
 async function deleteHospital(id) {
   const deleted = await db("hospitals")
-    .where({ id: id })
+    .where({ hospital_id: id })
     .del();
 
   return deleted;

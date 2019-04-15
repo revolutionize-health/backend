@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Coverages.getCoveragesBy({ id: req.params.id })
+  Coverages.getCoveragesById(req.params.id)
     .then(coverage => {
       if (coverage) {
         res.status(200).json(coverage);

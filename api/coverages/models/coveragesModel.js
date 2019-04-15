@@ -2,7 +2,7 @@ const db = require("../../../data/dbConfig");
 
 module.exports = {
   getCoverages,
-  getCoveragesBy,
+  getCoveragesById,
   addCoverage,
   updateCoverage,
   deleteCoverage
@@ -14,8 +14,10 @@ async function getCoverages() {
   return coverages;
 }
 
-async function getCoveragesBy(param) {
-  const coverage = await db("coverages").where(param);
+async function getCoveragesById(id) {
+  const coverage = await db("coverages")
+    .where({ coverage_id: id })
+    .first();
 
   return coverage;
 }
@@ -25,12 +27,12 @@ async function addCoverage(coverage) {
     .insert(coverage)
     .returning("id");
 
-  return getCoveragesBy({ id: id });
+  return getCoveragesById(id);
 }
 
 async function updateCoverage(id, changes) {
   const changedCoverage = await db("coverages")
-    .where({ id: id })
+    .where({ coverage_id: id })
     .update(changes);
 
   return changedCoverage;
@@ -38,7 +40,7 @@ async function updateCoverage(id, changes) {
 
 async function deleteCoverage(id) {
   const deleted = await db("coverages")
-    .where({ id: id })
+    .where({ coverage_id: id })
     .del();
 
   return deleted;
