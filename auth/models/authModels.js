@@ -11,8 +11,8 @@ module.exports = {
 async function addUser(user) {
   const [id] = await db("users")
     .insert(user)
-    .returning("id");
-  const newUser = await getUserBy({ id: id });
+    .returning("user_id");
+  const newUser = await getUserBy({ user_id: id });
   return newUser;
 }
 
