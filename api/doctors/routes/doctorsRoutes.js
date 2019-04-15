@@ -35,4 +35,24 @@ router.post("/", checkInsertRequirements, (req, res) => {
     });
 });
 
+router.put("/:id", checkInsertRequirements, (req, res) => {
+  Doctors.updateDoctor(req.params.id, req.body)
+    .then(changedDoctor => {
+      res.status(200).json(changedDoctor);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  Doctors.deleteDoctor(req.params.id)
+    .then(deletedInfo => {
+      res.status(200).json(deletedInfo);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = router;

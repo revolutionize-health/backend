@@ -47,4 +47,24 @@ router.post("/", checkInsertRequirements, (req, res) => {
     });
 });
 
+router.put("/:id", checkInsertRequirements, (req, res) => {
+  Procedures.updateProcedure(req.params.id, req.body)
+    .then(changedProcedure => {
+      res.status(200).json(changedProcedure);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  Procedures.deleteProcedure(req.params.id)
+    .then(deletedInfo => {
+      res.status(200).json(deletedInfo);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = router;

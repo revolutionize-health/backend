@@ -47,4 +47,24 @@ router.post("/", checkInsertRequirements, (req, res) => {
     });
 });
 
+router.put("/:id", checkInsertRequirements, (req, res) => {
+  Hospitals.updateHospital(req.params.id, req.body)
+    .then(changedHospital => {
+      res.status(200).json(changedHospital);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  Hospitals.deleteHospital(req.params.id)
+    .then(deletedInfo => {
+      res.status(200).json(deletedInfo);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = router;

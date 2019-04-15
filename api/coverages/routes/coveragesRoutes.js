@@ -41,4 +41,24 @@ router.post("/", checkInsertRequirements, (req, res) => {
     });
 });
 
+router.put("/:id", checkInsertRequirements, (req, res) => {
+  Coverages.updateCoverage(req.params.id, req.body)
+    .then(changedCoverage => {
+      res.status(200).json(changedCoverage);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  Coverages.deleteCoverage(req.params.id)
+    .then(deletedInfo => {
+      res.status(200).json(deletedInfo);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = router;

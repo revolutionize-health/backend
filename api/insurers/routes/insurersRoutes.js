@@ -45,4 +45,24 @@ router.post("/", checkInsertRequirements, (req, res) => {
     });
 });
 
+router.put("/:id", checkInsertRequirements, (req, res) => {
+  Insurers.updateInsurer(req.params.id, req.body)
+    .then(changedInsurer => {
+      res.status(200).json(changedInsurer);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  Insurers.deleteInsurer(req.params.id)
+    .then(deletedInfo => {
+      res.status(200).json(deletedInfo);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = router;
