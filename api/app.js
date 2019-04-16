@@ -4,7 +4,7 @@ const helmet = require("helmet");
 const AuthRouter = require("../auth/routes/authRouter");
 const CoveragesRouter = require("../api/coverages/routes/coveragesRoutes");
 const DoctorsRouter = require("../api/doctors/routes/doctorsRoutes");
-const HospitalsRouter = require("../api/hospitals/routes/hosptalsRoutes");
+const HospitalsRouter = require("../api/hospitals/routes/hospitalsRoutes");
 const InsurersRouter = require("../api/insurers/routes/insurersRoutes");
 const ProceduresRouter = require("../api/procedures/routes/proceduresRoutes");
 

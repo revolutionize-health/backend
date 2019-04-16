@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Doctors.getDoctorsById({ id: req.params.id })
+  Doctors.getDoctorsById(req.params.id)
     .then(doctor => {
       if (doctor) {
         res.status(200).json(doctor);
@@ -42,7 +42,11 @@ router.post("/", checkInsertRequirements, (req, res) => {
 router.put("/:id", checkInsertRequirements, (req, res) => {
   Doctors.updateDoctor(req.params.id, req.body)
     .then(changedDoctor => {
-      res.status(200).json(changedDoctor);
+      if (changedDoctor) {
+        res.status(200).json(changedDoctor);
+      } else {
+        res.status(404).json({ message: "no doctor with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -52,7 +56,11 @@ router.put("/:id", checkInsertRequirements, (req, res) => {
 router.delete("/:id", (req, res) => {
   Doctors.deleteDoctor(req.params.id)
     .then(deletedInfo => {
-      res.status(200).json(deletedInfo);
+      if (deletedInfo) {
+        res.status(200).json({ message: "doctor successfully deleted" });
+      } else {
+        res.status(404).json({ message: "no doctor with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

@@ -31,11 +31,16 @@ async function addDoctor(doctor) {
 }
 
 async function updateDoctor(id, changes) {
-  const changedDoctor = await db("doctors")
+  console.log(changes)
+  const updatedId = await db("doctors")
     .where({ doctor_id: id })
     .update(changes);
 
-  return changedDoctor;
+    console.log(updatedId)
+
+    const updatedDoctor = await getDoctorsById(updatedId)
+
+  return updatedDoctor;
 }
 
 async function deleteDoctor(id) {

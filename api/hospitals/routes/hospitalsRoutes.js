@@ -64,7 +64,11 @@ router.post("/", checkInsertRequirements, (req, res) => {
 router.put("/:id", checkInsertRequirements, (req, res) => {
   Hospitals.updateHospital(req.params.id, req.body)
     .then(changedHospital => {
-      res.status(200).json(changedHospital);
+      if (changedHospital) {
+        res.status(200).json(changedHospital);
+      } else {
+        res.status(404).json({ message: "no hospital with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -77,7 +81,7 @@ router.delete("/:id", (req, res) => {
       if (deletedInfo) {
         res
           .status(200)
-          .json({ message: "hospital has been removed from the database" });
+          .json({ message: "hospital successfully deleted" });
       } else {
         res.status(404).json({ message: "no hospital with that id" });
       }
