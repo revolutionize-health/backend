@@ -10,7 +10,11 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Coverages.getCoverages()
     .then(coverages => {
-      res.status(200).json(coverages);
+      if (coverages.length) {
+        res.status(200).json(coverages);
+      } else {
+        res.status(404).json({ message: "no coverages in the database" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -54,7 +58,11 @@ router.put("/:id", checkInsertRequirements, (req, res) => {
 router.delete("/:id", (req, res) => {
   Coverages.deleteCoverage(req.params.id)
     .then(deletedInfo => {
-      res.status(200).json(deletedInfo);
+      if (deletedInfo) {
+        res.status(200).json({ message: "coverage successfully deleted" });
+      } else {
+        res.status(404).json({ message: "no coverage with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

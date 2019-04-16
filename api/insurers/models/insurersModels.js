@@ -23,22 +23,14 @@ async function getInsurersById(id) {
 }
 
 async function getInsurersCoverages(id) {
-  const data = await db("insurers")
-    .join("coverages", "insurers.insurer_id", "coverages.insurer_id")
-    .where({ "insurers.insurer_id": id });
+  const insurer = await db("insurers")
+    .where({ insurer_id: id })
+    .first();
 
-  const { insurer_id, insurer_name } = data[0];
-
-  const coverages = data.map(coverage => ({
-    coverage_id: coverage.coverage_id,
-    insurer_id: coverage.insurer_id,
-    procedure_id: coverage.procedure_id,
-    amount: coverage.amount
-  }));
+  const coverages = await db("coverages").where({ insurer_id: id });
 
   return {
-    insurer_id,
-    insurer_name,
+    insurer,
     coverages
   };
 }
@@ -46,17 +38,19 @@ async function getInsurersCoverages(id) {
 async function addInsurer(insurer) {
   const [id] = await db("insurers")
     .insert(insurer)
-    .returning("id");
+    .returning("insurer_id");
 
-  const newInsurer = await getInsurersById({ id: id });
+  const newInsurer = await getInsurersById(id);
 
   return newInsurer;
 }
 
 async function updateInsurer(id, changes) {
-  const changedInsurer = await db("insurers")
-    .where({ id: id })
+  const updatedId = await db("insurers")
+    .where({ insurer_id: id })
     .update(changes);
+
+  const changedInsurer = await getInsurersById(updatedId);
 
   return changedInsurer;
 }

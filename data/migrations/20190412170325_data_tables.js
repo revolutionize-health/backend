@@ -17,14 +17,20 @@ exports.up = function(knex, Promise) {
     .createTable("hospitals", hospitals => {
       hospitals.increments("hospital_id");
 
-      hospitals.string("hospital_name").unique();
+      hospitals
+        .string("hospital_name")
+        .unique()
+        .notNullable();
 
       hospitals.string("hospital_website").unique();
     })
     .createTable("doctors", doctors => {
       doctors.increments("doctor_id");
 
-      doctors.string("doctor_name").notNullable();
+      doctors
+        .string("doctor_name")
+        .unique()
+        .notNullable();
 
       doctors.string("doctor_website").unique();
 

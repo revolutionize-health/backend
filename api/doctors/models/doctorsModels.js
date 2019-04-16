@@ -25,17 +25,22 @@ async function getDoctorsById(id) {
 async function addDoctor(doctor) {
   const [id] = await db("doctors")
     .insert(doctor)
-    .returning("id");
+    .returning("doctor_id");
 
   return getDoctorsById(id);
 }
 
 async function updateDoctor(id, changes) {
-  const changedDoctor = await db("doctors")
+  console.log(changes)
+  const updatedId = await db("doctors")
     .where({ doctor_id: id })
     .update(changes);
 
-  return changedDoctor;
+    console.log(updatedId)
+
+    const updatedDoctor = await getDoctorsById(updatedId)
+
+  return updatedDoctor;
 }
 
 async function deleteDoctor(id) {

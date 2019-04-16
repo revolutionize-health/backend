@@ -23,22 +23,12 @@ async function getProceduresById(id) {
 }
 
 async function getProceduresCoverages(id) {
-  const data = await db("procedures")
-    .join("coverages", "procedures.procedure_id", "coverages.procedure_id")
-    .where({ "procedures.procedure_id": id });
+  const procedure = await getProceduresById(id);
 
-  const { procedure_id, procedure_name, cost } = data[0];
-
-  const coverages = data.map(coverage => ({
-    coverage_id: coverage.coverage_id,
-    insurer_id: coverage.insurer_id,
-    amount: coverage.amount
-  }));
+  const coverages = await db("coverages").where({ procedure_id: id });
 
   return {
-    procedure_id,
-    procedure_name,
-    cost,
+    procedure,
     coverages
   };
 }
@@ -46,7 +36,7 @@ async function getProceduresCoverages(id) {
 async function addProcedure(procedure) {
   const [id] = await db("procedures")
     .insert(procedure)
-    .returning("id");
+    .returning("procedure_id");
 
   const newprocedure = await getProceduresById(id);
 
@@ -54,16 +44,18 @@ async function addProcedure(procedure) {
 }
 
 async function updateProcedure(id, changes) {
-  const changedProcedure = await db("procedures")
+  const updatedId = await db("procedures")
     .where({ procedure_id: id })
     .update(changes);
+
+  const changedProcedure = await getProceduresById(updatedId);
 
   return changedProcedure;
 }
 
 async function deleteProcedure(id) {
   const deleted = await db("procedures")
-    .where({ procedure_: id })
+    .where({ procedure_id: id })
     .del();
 
   return deleted;

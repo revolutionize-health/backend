@@ -11,6 +11,7 @@ module.exports = {
 
 async function getHospitals() {
   const hospitals = await db("hospitals");
+
   return hospitals;
 }
 
@@ -23,30 +24,22 @@ async function getHospitalsById(id) {
 }
 
 async function getHospitalsDoctors(id) {
-  const data = await db("hospitals")
-    .join("doctors", "hospitals.hospital_id", "doctors.hospital_id")
-    .where({ "hospitals.hospital_id": id });
+  const hospital = await db("hospitals")
+    .where({ hospital_id: id })
+    .first();
 
-  const { hospital_name, hospital_id, hospital_website } = data[0];
+  const doctors = await db("doctors").where({ hospital_id: id });
 
-  const doctors = data.map(doctor => ({
-    doctor_id: doctor.doctor_id,
-    doctor_name: doctor.doctor_name,
-    doctor_website: doctor.doctor_website
-  }));
-
-  return {
-    hospital_id,
-    hospital_name,
-    hospital_website,
-    doctors
-  };
+  return { hospital, doctors };
 }
 
 async function addHospital(hospital) {
-  const [id] = await db("hosptals")
+  console.log(hospital);
+  const [id] = await db("hospitals")
     .insert(hospital)
-    .returning("id");
+    .returning("hospital_id");
+
+  console.log(id);
 
   const newHospital = await getHospitalsById(id);
 
@@ -54,9 +47,11 @@ async function addHospital(hospital) {
 }
 
 async function updateHospital(id, changes) {
-  const changedHospital = await db("hospitals")
+  const updatedId = await db("hospitals")
     .where({ hospital_id: id })
-    .update(changes);
+    .update(changes)
+
+    const changedHospital = await getHospitalsById(updatedId);
 
   return changedHospital;
 }

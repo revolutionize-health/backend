@@ -4,7 +4,7 @@ module.exports = {
 
 function checkInsertRequirements(req, res, next) {
   const info = req.body;
-  if (info.name) {
+  if (info.insurer_name) {
     next();
   } else {
     res.status(403).json({ message: "required info was not provieded" });

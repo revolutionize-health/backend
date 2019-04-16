@@ -25,15 +25,17 @@ async function getCoveragesById(id) {
 async function addCoverage(coverage) {
   const [id] = await db("coverages")
     .insert(coverage)
-    .returning("id");
+    .returning("coverage_id");
 
   return getCoveragesById(id);
 }
 
 async function updateCoverage(id, changes) {
-  const changedCoverage = await db("coverages")
+  const updatedId = await db("coverages")
     .where({ coverage_id: id })
     .update(changes);
+
+  const changedCoverage = await getCoveragesById(updatedId);
 
   return changedCoverage;
 }
