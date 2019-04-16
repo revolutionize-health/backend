@@ -46,7 +46,7 @@ async function getInsurersCoverages(id) {
 async function addInsurer(insurer) {
   const [id] = await db("insurers")
     .insert(insurer)
-    .returning("id");
+    .returning("insurer_id");
 
   const newInsurer = await getInsurersById({ id: id });
 

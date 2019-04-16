@@ -18,7 +18,11 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Doctors.getDoctorsById({ id: req.params.id })
     .then(doctor => {
-      res.status(200).json(doctor);
+      if (doctor) {
+        res.status(200).json(doctor);
+      } else {
+        res.status(404).json({ message: "no doctor with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

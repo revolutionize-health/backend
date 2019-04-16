@@ -25,7 +25,7 @@ async function getDoctorsById(id) {
 async function addDoctor(doctor) {
   const [id] = await db("doctors")
     .insert(doctor)
-    .returning("id");
+    .returning("doctor_id");
 
   return getDoctorsById(id);
 }

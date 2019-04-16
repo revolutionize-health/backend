@@ -46,7 +46,7 @@ async function getProceduresCoverages(id) {
 async function addProcedure(procedure) {
   const [id] = await db("procedures")
     .insert(procedure)
-    .returning("id");
+    .returning("procedure_id");
 
   const newprocedure = await getProceduresById(id);
 

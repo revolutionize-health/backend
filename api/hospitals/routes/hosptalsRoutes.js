@@ -20,7 +20,11 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Hospitals.getHospitalsById(req.params.id)
     .then(hospital => {
-      res.status(200).json(hospital);
+      if (hospital) {
+        res.status(200).json(hospital);
+      } else {
+        res.status(404).json({ message: "no hospital with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -29,8 +33,18 @@ router.get("/:id", (req, res) => {
 
 router.get("/:id/doctors", (req, res) => {
   Hospitals.getHospitalsDoctors(req.params.id)
-    .then(doctors => {
-      res.status(200).json(doctors);
+    .then(data => {
+      if (data.hospital) {
+        if (data.doctors) {
+          res.status(200).json(data);
+        } else {
+          res
+            .status(404)
+            .json({ message: "no doctors on record for this hospital" });
+        }
+      } else {
+        res.status(404).json({ message: "no hospital with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -40,7 +54,7 @@ router.get("/:id/doctors", (req, res) => {
 router.post("/", checkInsertRequirements, (req, res) => {
   Hospitals.addHospital(req.body)
     .then(newHospital => {
-      res.status(200).json(newHospital);
+      res.status(201).json(newHospital);
     })
     .catch(error => {
       res.status(500).json(error);
@@ -60,7 +74,13 @@ router.put("/:id", checkInsertRequirements, (req, res) => {
 router.delete("/:id", (req, res) => {
   Hospitals.deleteHospital(req.params.id)
     .then(deletedInfo => {
-      res.status(200).json(deletedInfo);
+      if (deletedInfo) {
+        res
+          .status(200)
+          .json({ message: "hospital has been removed from the database" });
+      } else {
+        res.status(404).json({ message: "no hospital with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

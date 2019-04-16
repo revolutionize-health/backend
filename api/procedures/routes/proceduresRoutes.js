@@ -20,7 +20,11 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Procedures.getProceduresById(req.params.id)
     .then(procedure => {
-      res.status(200).json(procedure);
+      if (procedure) {
+        res.status(200).json(procedure);
+      } else {
+        res.status(404).json({ message: "no procedure with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -30,7 +34,13 @@ router.get("/:id", (req, res) => {
 router.get("/:id/coverages", (req, res) => {
   Procedures.getProceduresCoverages(req.params.id)
     .then(coverages => {
-      res.status(200).json(coverages);
+      if (coverages.coverages.length) {
+        res.status(200).json(coverages);
+      } else {
+        res
+          .status(404)
+          .json({ message: "no coverages on record for this procedure" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

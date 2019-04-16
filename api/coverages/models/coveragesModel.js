@@ -25,7 +25,7 @@ async function getCoveragesById(id) {
 async function addCoverage(coverage) {
   const [id] = await db("coverages")
     .insert(coverage)
-    .returning("id");
+    .returning("coverage_id");
 
   return getCoveragesById(id);
 }

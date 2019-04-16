@@ -8,7 +8,11 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Insurers.getInsurers()
     .then(insurers => {
-      res.status(200).json(insurers);
+      if (insurer) {
+        res.status(200).json(insurers);
+      } else {
+        res.status(404).json({ message: "no insurer with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -28,7 +32,13 @@ router.get("/:id", (req, res) => {
 router.get("/:id/coverages", (req, res) => {
   Insurers.getInsurersCoverages(req.params.id)
     .then(coverages => {
-      res.status(200).json(coverages);
+      if (coverages.coverages.length) {
+        res.status(200).json(coverages);
+      } else {
+        res
+          .status(404)
+          .json({ message: "no coverages on record for this insurer" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);

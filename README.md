@@ -1,7 +1,5 @@
 # backend
-
 ## Summary Table of API Endpoints
-
 | Type   | Endpoints                     | Description                                              |
 | ------ | ----------------------------- | -------------------------------------------------------- |
 | POST   | /api/auth/registration        | Register user                                            |
@@ -34,42 +32,213 @@
 | POST   | /api/coverages                | Add a coverage                                           |
 | PUT    | /api/coverages/:id            | Update a coverage                                        |
 | DELETE | /api/coverages/:id            | Remove a coverage                                        |
-
 ## endpoints
-
 ### POST /api/auth/registration
-
 ```
 {
-    first_name: 'string', 
-    last_name: 'string',
-    email: 'string', // unique, notNullable
-    password: 'string' // notNullable
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string", // unique, notNullable
+    "password": "string" // notNullable
 }
 ```
-
 `201 ✔️`
-
 ```
 {
-    token: "jsonwebtoken"
+    "token": "jsonwebtoken"
 }
 ```
-
 `403 📛`
-
 ```
 {
-    message: "required fields were not provided"
+    "message": "required fields were not provided"
 }
 ```
-
-`500 :fire_engine:`
-
+`500 🔥`
 ```
 {
-    error: "error message"
+    "error": "error message"
 }
 ```
-
-### POST /api/auth/login 
+### POST /api/auth/login
+```
+{
+    "email": "string",
+    "password": "string"
+}
+```
+`201 ✔️`
+```
+{
+    "token": "jsonwebtoken"
+}
+```
+`403 📛`
+```
+{
+    "message": "required fields were not provided"
+}
+or
+{
+    "message": "invalid credentials"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### GET /api/hospitals
+`200 ✔️`
+```
+[
+    {
+        "hospital_id": 1,
+        "hospital_name": "Gotham Central",
+        "hospital_website": "gothamcentral.com"
+    },
+    {
+        "hospital_id": 2,
+        "hospital_name": "Queen of the Valley",
+        "hospital_website": "thequeen.com"
+    },
+    {
+        "hospital_id": 3,
+        "hospital_name": "Kaiser Permanente",
+        "hospital_website": "kaiserpermanente.com"
+    }
+]
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### GET /api/hospitals/1
+`200 ✔️`
+```
+{
+    "hospital_id": 1,
+    "hospital_name": "Gotham Central",
+    "hospital_website": "gothamcentral.com"
+}
+```
+`404 😕`
+```
+{
+    "message": "no hospital with that id"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### GET /api/hospitals/1/doctors
+`200 ✔️`
+```
+{
+    "hospital": {
+        "hospital_id": 1,
+        "hospital_name": "Gotham Central",
+        "hospital_website": "gothamcentral.com"
+    },
+    "doctors": [
+        {
+            "doctor_id": 1,
+            "doctor_name": "Doctor McDoctorson",
+            "doctor_website": "doctormcdoctorson.com",
+            "hospital_id": 1
+        },
+        {
+            "doctor_id": 3,
+            "doctor_name": "Pediatrician McPediatricianson",
+            "doctor_website": "pediatricianmcpediatricianson.com",
+            "hospital_id": 1
+        },
+        {
+            "doctor_id": 4,
+            "doctor_name": "Dermatologist McDermatologistson",
+            "doctor_website": "dermatologistmcdermatologistson.com",
+            "hospital_id": 1
+        }
+    ]
+}
+```
+`404 😕`
+```
+{
+    "message": "no hospital with that id"
+}
+or
+{
+    "message": "no doctors on record for this hospital"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### POST /api/hospitals
+```
+{
+	"hospital_name": "Hospital of TestVille",
+	"hospital_website": "testpital.com"
+}
+```
+`201 ✔️`
+```
+{
+    "hospital_id": 4,
+    "hospital_name": "Hospital of TestVille",
+    "hospital_website": "testpital.com"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### PUT /api/hospitals/1
+`200 ✔️`
+```
+{
+    "hospital_id": 1,
+    "hospital_name": "Hospital of UpdateVille",
+    "hospital_website": "updatepital.com"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```
+### DELETE /api/hospitals/1
+```
+1
+```
+`200 ✔️`
+```
+{
+    "message": "hospital has been removed from the database"
+}
+```
+`404 😕`
+```
+{
+    "message": "no hospital with that id"
+}
+```
+`500 🔥`
+```
+{
+    "error": "error message"
+}
+```

@@ -17,7 +17,10 @@ exports.up = function(knex, Promise) {
     .createTable("hospitals", hospitals => {
       hospitals.increments("hospital_id");
 
-      hospitals.string("hospital_name").unique();
+      hospitals
+        .string("hospital_name")
+        .unique()
+        .notNullable();
 
       hospitals.string("hospital_website").unique();
     })
