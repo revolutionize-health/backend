@@ -9,8 +9,12 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   Hospitals.getHospitals()
-    .then(doctors => {
-      res.status(200).json(doctors);
+    .then(hospitals => {
+      if (hospitals.length) {
+        res.status(200).json(hospitals);
+      } else {
+        res.status(404).json({ message: "no hospitals in the database" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -35,7 +39,7 @@ router.get("/:id/doctors", (req, res) => {
   Hospitals.getHospitalsDoctors(req.params.id)
     .then(data => {
       if (data.hospital) {
-        if (data.doctors) {
+        if (data.doctors.length) {
           res.status(200).json(data);
         } else {
           res
@@ -79,9 +83,7 @@ router.delete("/:id", (req, res) => {
   Hospitals.deleteHospital(req.params.id)
     .then(deletedInfo => {
       if (deletedInfo) {
-        res
-          .status(200)
-          .json({ message: "hospital successfully deleted" });
+        res.status(200).json({ message: "hospital successfully deleted" });
       } else {
         res.status(404).json({ message: "no hospital with that id" });
       }

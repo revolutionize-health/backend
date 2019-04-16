@@ -20,9 +20,9 @@
 | GET    | /api/insurers                 | Get a list of insurers                                   |
 | GET    | /api/insurers/:id             | Get a specific insurer                                   |
 | GET    | /api/insurers/:id/coverages   | Get a list of coverages that a specific insurer provides |
-| POST   | /api/insurers                 | Add a insurer                                            |
-| PUT    | /api/insurers/:id             | Update a insurer                                         |
-| DELETE | /api/insurers/:id             | Remove a insurer                                         |
+| POST   | /api/insurers                 | Add an insurer                                           |
+| PUT    | /api/insurers/:id             | Update an insurer                                        |
+| DELETE | /api/insurers/:id             | Remove an insurer                                        |
 | GET    | /api/procedures               | Get a list of procedures                                 |
 | GET    | /api/procedures/:id           | Get a specific procedure                                 |
 | GET    | /api/procedures/:id/coverages | Get a list of coverages for a specific procedure         |
@@ -76,8 +76,8 @@
 
 ```
 {
-    "email": "string",
-    "password": "string"
+    "email": "string", // required
+    "password": "string" // requiured
 }
 ```
 
@@ -95,7 +95,11 @@
 {
     "message": "required fields were not provided"
 }
-or
+```
+
+`or`
+
+```
 {
     "message": "invalid credentials"
 }
@@ -131,6 +135,14 @@ or
         "hospital_website": "kaiserpermanente.com"
     }
 ]
+```
+
+`404 😕`
+
+```
+{
+    "message": "no hospitals in the database"
+}
 ```
 
 `500 🔥`
@@ -209,7 +221,11 @@ or
 {
     "message": "no hospital with that id"
 }
-or
+```
+
+`or`
+
+```
 {
     "message": "no doctors on record for this hospital"
 }
@@ -227,7 +243,7 @@ or
 
 ```
 {
-	"hospital_name": "Hospital of TestVille",
+	"hospital_name": "Hospital of TestVille", // unique, notNullable
 	"hospital_website": "testpital.com"
 }
 ```
@@ -254,7 +270,7 @@ or
 
 ```
 {
-    "hospital_name": "Hospital of UpdateVille",
+    "hospital_name": "Hospital of UpdateVille", // unique, notNullable
     "hospital_website": "updatepital.com"
 }
 ```
@@ -348,6 +364,14 @@ or
 ]
 ```
 
+`404 😕`
+
+```
+{
+    "message": "no doctors in the database"
+}
+```
+
 `500 🔥`
 
 ```
@@ -389,9 +413,9 @@ or
 
 ```
 {
-    "doctor_name": "Health McHealtherson",
-    "doctor_website": "healthmchealtherson.com",
-    "hospital_id": 1
+    "doctor_name": "Health McHealtherson", // unique, notNullable
+    "doctor_website": "healthmchealtherson.com", // unique
+    "hospital_id": 1 // notNullable
 }
 ```
 
@@ -426,9 +450,9 @@ or
 
 ```
 {
-    "doctor_name": "Doctor McDoctorson",
-    "doctor_website": "doctormcdoctorson.com",
-    "hospital_id": 2
+    "doctor_name": "Doctor McDoctorson", // unique, notNullable
+    "doctor_website": "doctormcdoctorson.com", // unique
+    "hospital_id": 2 // notNullable
 }
 ```
 
@@ -482,6 +506,643 @@ or
 ```
 {
     "message": "no doctor with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/insurers
+
+`200 ✔️`
+
+```
+[
+    {
+        "insurer_id": 1,
+        "insurer_name": "Good Insurance Company"
+    },
+    {
+        "insurer_id": 2,
+        "insurer_name": "Ok Insurance Company"
+    },
+    {
+        "insurer_id": 3,
+        "insurer_name": "Bad Insurance Company"
+    }
+]
+```
+
+`404 😕`
+
+```
+{
+    "message": "no insurers in the database"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/insurers/:id
+
+`200 ✔️`
+
+```
+{
+    "insurer_id": 1,
+    "insurer_name": "Good Insurance Company"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no insurer with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/insurer/:id/coverages
+
+`200 ✔️`
+
+```
+{
+    "insurer": {
+        "insurer_id": 1,
+        "insurer_name": "Good Insurance Company"
+    },
+    "coverages": [
+        {
+            "coverage_id": 1,
+            "insurer_id": 1,
+            "procedure_id": 1,
+            "amount": 2000
+        },
+        {
+            "coverage_id": 4,
+            "insurer_id": 1,
+            "procedure_id": 2,
+            "amount": 1000
+        }
+    ]
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no insurer with that id"
+}
+```
+
+`or`
+
+```
+{
+    "message": "no coverages on record for this insurer"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### POST /api/insurers
+
+```
+{
+    "insurer_name": "Another Insurance Company" // unique, notNullable
+}
+```
+
+`201 ✔️`
+
+```
+{
+    "insurer_id": 4,
+    "insurer_name": "Another Insurance Company"
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### PUT /api/insurers/:id
+
+```
+{
+    "insurer_name": "Good and Updated Insurance Company" // unique, notNullable
+}
+```
+
+`200 ✔️`
+
+```
+{
+    "insurer_id": 1,
+    "insurer_name": "Good and Updated Insurance Company"
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no insurer with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### DELETE /api/insurers/:id
+
+`200 ✔️`
+
+```
+{
+    "message": "insurer successfully deleted"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no insurer with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/procedures
+
+`200 ✔️`
+
+```
+[
+    {
+        "procedure_id": 1,
+        "procedure_name": "Big Toe Removal",
+        "cost": 2000
+    },
+    {
+        "procedure_id": 2,
+        "procedure_name": "Pinky Toe Removal",
+        "cost": 1000
+    },
+    {
+        "procedure_id": 3,
+        "procedure_name": "Heart Transplant",
+        "cost": 200000
+    },
+    {
+        "procedure_id": 4,
+        "procedure_name": "Spinal Fusion",
+        "cost": 500000
+    },
+    {
+        "procedure_id": 5,
+        "procedure_name": "Eye Check",
+        "cost": 50
+    },
+    {
+        "procedure_id": 6,
+        "procedure_name": "Cast Removal",
+        "cost": 20
+    }
+]
+```
+
+`404 😕`
+
+```
+{
+    "message": "no procedures in the database"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/procedures/:id
+
+`200 ✔️`
+
+```
+{
+    "procedure_id": 1,
+    "procedure_name": "Big Toe Removal",
+    "cost": 2000
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no procedure with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/procedures/:id/coverages
+
+`200 ✔️`
+
+```
+{
+    "procedure": {
+        "procedure_id": 1,
+        "procedure_name": "Big Toe Removal",
+        "cost": 2000
+    },
+    "coverages": [
+        {
+            "coverage_id": 1,
+            "insurer_id": 1,
+            "procedure_id": 1,
+            "amount": 2000
+        },
+        {
+            "coverage_id": 2,
+            "insurer_id": 2,
+            "procedure_id": 1,
+            "amount": 1500
+        },
+        {
+            "coverage_id": 3,
+            "insurer_id": 3,
+            "procedure_id": 1,
+            "amount": 200
+        }
+    ]
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no procedure with that id"
+}
+```
+
+`or`
+
+```
+{
+    "message": "no coverages on record for this prcedure"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### POST /api/procedures
+
+```
+{
+    "procedure_name": "Kidney Removal", // unique, notNullable
+    "cost": 45000 // notNullable
+}
+```
+
+`201 ✔️`
+
+```
+{
+    "procedure_id": 7,
+    "procedure_name": "Kidney Removal",
+    "cost": 45000
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### PUT /api/procedures/:id
+
+```
+    {
+        "procedure_name": "Big Toe Removal Via Blowtorch", //unique, notNullable
+        "cost": 2000 // notNullable
+    }
+
+```
+
+`200 ✔️`
+
+```
+{
+    "procedure_id": 1,
+    "procedure_name": "Big Toe Removal Via Blowtorch",
+    "cost": 2000
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### DELETE /api/procedure/:id
+
+`200 ✔️`
+
+```
+{
+    "message": "procedure successfully deleted"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no procedure with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/coverages
+
+`200 ✔️`
+
+```
+[
+    {
+        "coverage_id": 1,
+        "insurer_id": 1,
+        "procedure_id": 1,
+        "amount": 2000
+    },
+    {
+        "coverage_id": 2,
+        "insurer_id": 2,
+        "procedure_id": 1,
+        "amount": 1500
+    },
+    {
+        "coverage_id": 3,
+        "insurer_id": 3,
+        "procedure_id": 1,
+        "amount": 200
+    },
+    {
+        "coverage_id": 4,
+        "insurer_id": 1,
+        "procedure_id": 2,
+        "amount": 1000
+    },
+    {
+        "coverage_id": 5,
+        "insurer_id": 2,
+        "procedure_id": 2,
+        "amount": 750
+    }
+]
+```
+
+`404 😕`
+
+```
+{
+    "message": "no coverages in the database"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/coverages/:id
+
+`200 ✔️`
+
+```
+{
+    "coverage_id": 1,
+    "insurer_id": 1,
+    "procedure_id": 1,
+    "amount": 2000
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no coverage with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### POST /api/coverages
+
+```
+{
+    "insurer_id": 1, // notNullable
+    "procedure_id": 7, // notNullable
+    "amount": 200000 // notNullable
+}
+```
+
+`201 ✔️`
+
+```
+{
+    "coverage_id": 6,
+    "insurer_id": 1,
+    "procedure_id": 7,
+    "amount": 200000
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### PUT /api/coverages/:id
+
+```
+{
+    "insurer_id": 1, // notNullable
+    "procedure_id": 1, // notNullable
+    "amount": 1999 // notNullable
+}
+```
+
+`200 ✔️`
+
+```
+{
+    "coverage_id": 1,
+    "insurer_id": 1,
+    "procedure_id": 1,
+    "amount": 1999
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### DELETE /api/coverage/:id
+
+`200 ✔️`
+
+```
+{
+    "message": "coverage successfully deleted"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no coverage with that id"
 }
 ```
 

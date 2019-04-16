@@ -10,9 +10,14 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Procedures.getProcedures()
     .then(procedures => {
-      res.status(200).json(procedures);
+      if (procedures.length) {
+        res.status(200).json(procedures);
+      } else {
+        res.status(404).json({ message: "no procedures in our database" });
+      }
     })
     .catch(error => {
+      console.log(error);
       res.status(500).json(error);
     });
 });
@@ -33,13 +38,17 @@ router.get("/:id", (req, res) => {
 
 router.get("/:id/coverages", (req, res) => {
   Procedures.getProceduresCoverages(req.params.id)
-    .then(coverages => {
-      if (coverages.coverages.length) {
-        res.status(200).json(coverages);
+    .then(data => {
+      if (data.procedure) {
+        if (data.coverages.length) {
+          res.status(200).json(data);
+        } else {
+          res
+            .status(404)
+            .json({ message: "no coverages on record for this prcedure" });
+        }
       } else {
-        res
-          .status(404)
-          .json({ message: "no coverages on record for this procedure" });
+        res.status(404).json({ message: "no procedure with that id" });
       }
     })
     .catch(error => {
@@ -60,7 +69,11 @@ router.post("/", checkInsertRequirements, (req, res) => {
 router.put("/:id", checkInsertRequirements, (req, res) => {
   Procedures.updateProcedure(req.params.id, req.body)
     .then(changedProcedure => {
-      res.status(200).json(changedProcedure);
+      if (changedProcedure) {
+        res.status(200).json(changedProcedure);
+      } else {
+        res.status(404).json({ message: "no procedure with that id" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -70,9 +83,14 @@ router.put("/:id", checkInsertRequirements, (req, res) => {
 router.delete("/:id", (req, res) => {
   Procedures.deleteProcedure(req.params.id)
     .then(deletedInfo => {
-      res.status(200).json(deletedInfo);
+      if (deletedInfo) {
+        res.status(200).json({ message: "procedure successfully deleted" });
+      } else {
+        res.status(404).json({ message: "no procedure with that id" });
+      }
     })
     .catch(error => {
+      console.log(error)
       res.status(500).json(error);
     });
 });

@@ -8,7 +8,11 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Doctors.getDoctors()
     .then(doctors => {
-      res.status(200).json(doctors);
+      if (doctors.length) {
+        res.status(200).json(doctors);
+      } else {
+        res.status(404).json({ message: "no doctors in the database" });
+      }
     })
     .catch(error => {
       res.status(500).json(error);
