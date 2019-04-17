@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const AuthRouter = require("../auth/routes/authRouter");
+const UsersRouter = require("../api/users/routes/usersRoutes");
 const CoveragesRouter = require("../api/coverages/routes/coveragesRoutes");
 const DoctorsRouter = require("../api/doctors/routes/doctorsRoutes");
 const HospitalsRouter = require("../api/hospitals/routes/hospitalsRoutes");
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(helmet());
 
 app.use("/api/auth", AuthRouter);
+app.use("/api/users", UsersRouter);
 app.use("/api/coverages", CoveragesRouter);
 app.use("/api/doctors", DoctorsRouter);
 app.use("/api/hospitals", HospitalsRouter);

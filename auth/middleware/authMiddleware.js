@@ -10,7 +10,7 @@ function checkCredentials(req, res, next) {
   if (credentials.email && credentials.password) {
     next();
   } else {
-    res.status(403).json({ message: "required fields were not provided" });
+    res.status(403).json({ message: "required info was not provided" });
   }
 }
 
