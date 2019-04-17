@@ -6,6 +6,9 @@
 | ------ | ----------------------------- | -------------------------------------------------------- |
 | POST   | /api/auth/registration        | Register user                                            |
 | POST   | /api/auth/login               | Login                                                    |
+| GET    | /api/users/:id                | Get a specific user                                      |
+| PUT    | /api/users/:id                | Update a user                                            |
+| DELETE | /api/users/:id                | Remove a user                                            |
 | GET    | /api/hospitals                | Get a list of hospitals                                  |
 | GET    | /api/hospitals/:id            | Get a specific hospital                                  |
 | GET    | /api/hospitals/:id/doctors    | Get a list of doctors that work at a specific hospital   |
@@ -102,6 +105,105 @@
 ```
 {
     "message": "invalid credentials"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### GET /api/users/:id
+
+`200 ✔️`
+
+```
+{
+    "first_name": "Brandon",
+    "last_name": "Allison",
+    "email": "brandon@allison.com"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no user with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### PUT /api/users/:id
+
+```
+{
+    "first_name": "Brandonious",
+    "last_name": "Allison",
+    "email": "brandon@allison.com",
+    "password": "betterpassword"
+}
+```
+
+`200 ✔️`
+
+```
+{
+    "first_name": "Brandonious",
+    "last_name": "Allison",
+    "email": "brandon@allison.com"
+}
+```
+
+`403 📛`
+
+```
+{
+    "message": "required info was not provided"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no user with that id"
+}
+```
+
+`500 🔥`
+
+```
+{
+    "error": "error message"
+}
+```
+
+### DELETE /api/users/:id
+
+`200 ✔️`
+
+```
+{
+    "message": "user successfully deleted"
+}
+```
+
+`404 😕`
+
+```
+{
+    "message": "no user with that id"
 }
 ```
 
