@@ -32,13 +32,13 @@ async function addDoctor(doctor) {
 
 async function updateDoctor(id, changes) {
   console.log(changes)
-  const updatedId = await db("doctors")
+   await db("doctors")
     .where({ doctor_id: id })
     .update(changes);
 
     console.log(updatedId)
 
-    const updatedDoctor = await getDoctorsById(updatedId)
+    const updatedDoctor = await getDoctorsById(id)
 
   return updatedDoctor;
 }

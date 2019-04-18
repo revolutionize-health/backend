@@ -46,11 +46,11 @@ async function addInsurer(insurer) {
 }
 
 async function updateInsurer(id, changes) {
-  const updatedId = await db("insurers")
+   await db("insurers")
     .where({ insurer_id: id })
     .update(changes);
 
-  const changedInsurer = await getInsurersById(updatedId);
+  const changedInsurer = await getInsurersById(id);
 
   return changedInsurer;
 }

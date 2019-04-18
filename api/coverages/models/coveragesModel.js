@@ -31,11 +31,11 @@ async function addCoverage(coverage) {
 }
 
 async function updateCoverage(id, changes) {
-  const updatedId = await db("coverages")
+  await db("coverages")
     .where({ coverage_id: id })
     .update(changes);
 
-  const changedCoverage = await getCoveragesById(updatedId);
+  const changedCoverage = await getCoveragesById(id);
 
   return changedCoverage;
 }
