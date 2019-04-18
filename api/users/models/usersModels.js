@@ -15,11 +15,11 @@ async function getUserById(id) {
 }
 
 async function updateUser(id, changes) {
-  const updatedId = await db("users")
+  await db("users")
     .where({ user_id: id })
     .update(changes);
 
-  const changedUser = await getUserById(updatedId);
+  const changedUser = await getUserById(id);
 
   return changedUser;
 }

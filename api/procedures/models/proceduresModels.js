@@ -44,11 +44,11 @@ async function addProcedure(procedure) {
 }
 
 async function updateProcedure(id, changes) {
-  const updatedId = await db("procedures")
+  await db("procedures")
     .where({ procedure_id: id })
     .update(changes);
 
-  const changedProcedure = await getProceduresById(updatedId);
+  const changedProcedure = await getProceduresById(id);
 
   return changedProcedure;
 }

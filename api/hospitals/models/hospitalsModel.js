@@ -47,11 +47,11 @@ async function addHospital(hospital) {
 }
 
 async function updateHospital(id, changes) {
-  const updatedId = await db("hospitals")
+  await db("hospitals")
     .where({ hospital_id: id })
     .update(changes)
 
-    const changedHospital = await getHospitalsById(updatedId);
+    const changedHospital = await getHospitalsById(id);
 
   return changedHospital;
 }
